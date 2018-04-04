@@ -11,14 +11,15 @@ import UIKit
 class Util: NSObject {
     
     private typealias Chunk = (start: Int, length: Int)
-    static let LIMIT_CHARACTER = 20
+    static let LIMIT_CHARACTER = 50
     
-    static func splitMessage(_ message: String) -> [String] {
+    static func splitMessage(_ input: String) -> [String] {
        
         // VARIABLES
         var start = 0
         var lengthOfTotalChunks = 1
         var chunks = [Chunk]()
+        var message = input.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         // SUB FUNCTIONS
         /// find left closest position of whitespace character from specific position
@@ -134,7 +135,7 @@ class Util: NSObject {
             var lstString = [String]()
             
             for (index, item) in chunks.enumerated() {
-                // get sub string from start & length values of chunk
+                // get sub string from start & length values of chunk then trim whitespaces
                 let splitStr = String(message[item.start...(item.start + item.length - 1)]).trimmingCharacters(in: .whitespacesAndNewlines)
                 
                 // make complete message
