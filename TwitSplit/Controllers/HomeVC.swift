@@ -10,8 +10,8 @@ import UIKit
 
 class HomeVC: UIViewController {
 
-    @IBOutlet weak var viewInput: UIView!
-    @IBOutlet weak var tableMessage: UITableView!
+    @IBOutlet weak var newInputView: UIView!
+    @IBOutlet weak var messagesTableView: UITableView!
     
     private var lstData: [MessageData] = []
     
@@ -23,9 +23,9 @@ class HomeVC: UIViewController {
     }
     
     private func configTableView() {
-        tableMessage.dataSource = self
-        tableMessage.delegate = self
-        tableMessage.estimatedRowHeight = 40
+        messagesTableView.dataSource = self
+        messagesTableView.delegate = self
+        messagesTableView.estimatedRowHeight = 44
     }
     
     private func reloadTableView(numOfInsert: Int) {
@@ -33,24 +33,24 @@ class HomeVC: UIViewController {
         let lstIP = (0..<numOfInsert).map {IndexPath(row: $0, section: 0)}
         
         // insertRows with animation
-        tableMessage.beginUpdates()
-        tableMessage.insertRows(at: lstIP, with: UITableViewRowAnimation.automatic)
-        tableMessage.endUpdates()
+        messagesTableView.beginUpdates()
+        messagesTableView.insertRows(at: lstIP, with: UITableViewRowAnimation.automatic)
+        messagesTableView.endUpdates()
         
         // scroll to top of table view to visible the newest data
-        tableMessage.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
+        messagesTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.top, animated: true)
     }
     
     private func configEventListener() {
         // add tap gesture to viewInput
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewInputDidTap(gesture:)))
-        viewInput.addGestureRecognizer(tapGesture)
+        newInputView.addGestureRecognizer(tapGesture)
     }
     
     @objc
     private func viewInputDidTap(gesture: UITapGestureRecognizer) {
         // config and present Input View Controller
-        if let inputVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "InputVC") as? InputVC {
+        if let inputVC = UIStoryboard(name: Const.STORYBOARD_NAME, bundle: nil).instantiateViewController(withIdentifier: Const.VCTRL_INPUT_ID) as? InputVC {
             inputVC.delegate = self
             present(inputVC, animated: true, completion: nil)
         }

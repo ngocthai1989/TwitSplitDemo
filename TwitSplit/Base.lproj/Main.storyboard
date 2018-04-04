@@ -98,8 +98,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="tableMessage" destination="6rs-aG-Q3Y" id="unB-ss-DEd"/>
-                        <outlet property="viewInput" destination="ke4-ou-L8g" id="5Ri-gU-55J"/>
+                        <outlet property="messagesTableView" destination="6rs-aG-Q3Y" id="unB-ss-DEd"/>
+                        <outlet property="newInputView" destination="ke4-ou-L8g" id="5Ri-gU-55J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -150,7 +150,8 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="textViewInput" destination="dWt-fg-O7O" id="MgG-Tr-rz7"/>
+                        <outlet property="inputTextView" destination="dWt-fg-O7O" id="MgG-Tr-rz7"/>
+                        <outlet property="shareButton" destination="iOc-jE-rEN" id="Jjh-9a-Yzo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vD8-rr-xQ4" userLabel="First Responder" sceneMemberID="firstResponder"/>

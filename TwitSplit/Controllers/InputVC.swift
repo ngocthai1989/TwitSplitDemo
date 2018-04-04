@@ -10,7 +10,8 @@ import UIKit
 
 class InputVC: UIViewController {
 
-    @IBOutlet weak var textViewInput: UITextView!
+    @IBOutlet weak var inputTextView: UITextView!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     private let PLACEHOLDER_TEXT = "Your Message..."
     private let PLACEHOLDER_COLOR = UIColor.lightGray
@@ -22,25 +23,28 @@ class InputVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configTextView()
+        
+        // set share button to disable because the input is empty
+        shareButton.isEnabled = false
     }
 
     private func configTextView() {
-        textViewInput.delegate = self
-        textViewInput.becomeFirstResponder()
+        inputTextView.delegate = self
+        inputTextView.becomeFirstResponder()
         setupTextViewPlaceholder()
         addLabelCharacterCounter()
     }
     
     private func setupTextViewPlaceholder() {
         placeholderLabel = UILabel()
-        placeholderLabel.font = textViewInput.font
+        placeholderLabel.font = inputTextView.font
         placeholderLabel.textColor = PLACEHOLDER_COLOR
         placeholderLabel.text = PLACEHOLDER_TEXT
         placeholderLabel.sizeToFit()
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (textViewInput.font?.pointSize ?? 17) / 2)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (inputTextView.font?.pointSize ?? 17) / 2)
         placeholderLabel.isHidden = false
         
-        textViewInput.addSubview(placeholderLabel)
+        inputTextView.addSubview(placeholderLabel)
     }
     
     private func addLabelCharacterCounter() {
@@ -58,23 +62,23 @@ class InputVC: UIViewController {
         accessoryView.centerYAnchor.constraint(equalTo: counterLabel.centerYAnchor).isActive = true
         
         // add accessoryView to text view
-        textViewInput.inputAccessoryView = accessoryView
+        inputTextView.inputAccessoryView = accessoryView
     }
     
     @IBAction func buttonCancelDidTouch(_ sender: UIBarButtonItem) {
-        textViewInput.resignFirstResponder()
+        inputTextView.resignFirstResponder()
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func buttonShareDidTouch(_ sender: UIBarButtonItem) {
-        if let input = textViewInput.text, !input.isEmpty {
+        if let input = inputTextView.text, !input.isEmpty {
             let splitMsg = Util.splitMessage(input)
             
             if splitMsg.isEmpty {
-                print("Error")
+                showErrorAlert()
                 
             } else {
-                textViewInput.resignFirstResponder()
+                inputTextView.resignFirstResponder()
                 dismiss(animated: true) { [weak self] in
                         self?.delegate?.didInput(messages: splitMsg)
                 }
@@ -83,10 +87,23 @@ class InputVC: UIViewController {
         }
     }
     
+    private func showErrorAlert() {
+        let alertCtrl = UIAlertController(title: Const.ALERT_TITLE_ERROR, message: Const.ALERT_MESSAGE_INVALID_MESSAGE, preferredStyle: UIAlertControllerStyle.alert)
+        let dismissAction = UIAlertAction(title: Const.ALERT_BUTTON_DISMISS, style: UIAlertActionStyle.default, handler: {
+            action in
+            self.inputTextView.selectedTextRange = self.inputTextView.textRange(from: self.inputTextView.beginningOfDocument , to: self.inputTextView.endOfDocument)
+        })
+        alertCtrl.addAction(dismissAction)
+        
+        present(alertCtrl, animated: true, completion: nil)
+    }
 }
 
 extension InputVC: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
+        // check if button share should be disable
+        shareButton.isEnabled = !textView.text.isEmpty
+        
         // check if placeholderLabel should be visible or not
         placeholderLabel.isHidden = !textView.text.isEmpty
         
