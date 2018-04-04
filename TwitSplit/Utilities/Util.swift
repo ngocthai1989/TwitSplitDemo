@@ -19,7 +19,7 @@ class Util: NSObject {
         var start = 0
         var lengthOfTotalChunks = 1
         var chunks = [Chunk]()
-        var message = input.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        var message = ""
         
         // SUB FUNCTIONS
         /// find left closest position of whitespace character from specific position
@@ -149,6 +149,9 @@ class Util: NSObject {
         }
         
         // MAIN FUNCTION
+        
+        // trim input message
+        message = input.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         // if message length is valid
         if message.count <= LIMIT_CHARACTER {
